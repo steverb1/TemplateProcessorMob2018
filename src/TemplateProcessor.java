@@ -12,23 +12,25 @@ public class TemplateProcessor {
     public String process(String sourceTemplate, String reqId)
     {
         String template = sourceTemplate;
+        String altCode = reqId;
 
         // Substitute for %CODE%
-        int templateSplitBegin = template.indexOf(CODE);
-        int templateSplitEnd = templateSplitBegin + CODE.length();
+        template = foo(template, altCode, CODE);
+        String altcode = reqId.substring(0, 5) + "-" + reqId.substring(5, 8);
+
+        // Substitute for %ALTCODE%
+        return foo(template, altcode, ALTCODE);
+    }
+
+    private String foo(String template, String altCode, String code)
+    {
+        int templateSplitBegin = template.indexOf(code);
+        int templateSplitEnd = templateSplitBegin + code.length();
         String templatePartOne = template.substring(0, templateSplitBegin);
         String templatePartTwo = template.substring(templateSplitEnd, template.length());
 
-        template = templatePartOne + reqId + templatePartTwo;
-
-        // Substitute for %ALTCODE%
-        templateSplitBegin = template.indexOf(ALTCODE);
-        templateSplitEnd = templateSplitBegin + ALTCODE.length();
-        templatePartOne = template.substring(0, templateSplitBegin);
-        templatePartTwo = template.substring(templateSplitEnd, template.length());
-
-        String altcode = reqId.substring(0, 5) + "-" + reqId.substring(5, 8);
-        return templatePartOne + altcode + templatePartTwo;
+        template = templatePartOne + altCode + templatePartTwo;
+        return template;
     }
 
 }
